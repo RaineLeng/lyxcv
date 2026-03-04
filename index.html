@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>冷语欣 | 个人简历</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bg: '#0F1115',      // Deep charcoal/black
+                        fg: '#EAEAEA',      // Off-white text
+                        accent: '#FF4B4B',  // Vibrant Red (Anime.js style)
+                        sub: '#888888',     // Muted gray
+                        modal: '#1A1C23',   // Modal background
+                    },
+                    fontFamily: {
+                        sans: ['"Space Grotesk"', '"Noto Sans SC"', 'sans-serif'],
+                        mono: ['monospace'], 
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- React -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <!-- Anime.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+    <style>
+        body {
+            background-color: #0F1115;
+            color: #EAEAEA;
+            font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Hide scrollbar for cleaner look */
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
+        
+        .letter-path {
+            fill: none;
+            stroke: #EAEAEA;
+            stroke-width: 2;
+            stroke-linecap: square;
+            stroke-linejoin: round;
+        }
+
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // --- Data ---
+        const resumeData = {
+            profile: {
+                name_en: "LENG YUXIN",
+                name_cn: "冷语欣",
+                role: "产品经理 | Product Manager",
+                contact: "yuxin_leng@outlook.com",
+                summary: "多方向产品实践。具备从0-1架构搭建、功能/策略迭代到数据分析的全链路产品能力，拥有跨文化交流背景。"
+            },
+            experience: [
+                {
+                    year: "2025.10 - 2026.03",
+                    company: "Soul App",
+                    role: "平台策略产品",
+                    desc: "负责Soul站内流量分发与功能生态治理",
+                    detailed_overview: "负责 Soul 站内流量分发与功能生态治理业务。以提升「LT/LTV」为目标，需要降低对用户的打扰。通过全局中台建设与精细化策略实验优化触达链路，降低人均弹窗次数；通过功能展示优化提升一级入口渗透点击率。在保障各业务收益的前提下实现降噪。",
+                    tags: ["策略产品", "生态治理", "数据分析"],
+                    projects: [
+                        {
+                            title: "站内弹窗分发基建与触达链路优化",
+                            items: [
+                                "架构能力搭建：0-1推动全局弹窗新队列架构改造，统一优先级、白名单及新配置样式等策略能力。",
+                                "策略：推全“弹窗白名单弹出页面”策略。通用功能弹窗曝光PV下降~8%，群聊弹窗曝光PV下降~28%，显著降低无效触达。",
+                                "策略：开发“冷启动间隔”、“展示间隔”等多变量实验。推全策略组累计LT30+0.34%，女性累计LT30+0.22%。"
+                            ]
+                        },
+                        {
+                            title: "红点分发效率与屏效治理",
+                            items: [
+                                "红点消除实验：补全核心页面红点埋点基建，量化功能引导红点的真实留存贡献。",
+                                "一级入口展示优化：优化“星球页奇遇铃浮球”、“广场页Soulseek”入口权重。实现累计LT30+0.08%，人均文字匹配付费天数+3.13%。"
+                            ]
+                        },
+                         {
+                            title: "设置页重构",
+                            items: [
+                                "调研显示“内容无关”是弹窗首要痛点(占比26%)，且部分设置项点击率极低(<1%)。",
+                                "信息架构层级重塑：将20+设置项重构为“我的/账号/功能/系统”模块化布局",
+                                "开关策略:新增4大核心页面(星球/广场/私聊/个人页)红点及弹窗独立开关，联动后端接口实现实时状态控制。收益：建立用户确定性预期，站内弹窗曝光下降~10%，红点打扰降低~8%，高知用户累计LT30+0.64%。"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    year: "2025.06 - 2025.09",
+                    company: "美团",
+                    role: "门票交易产品",
+                    desc: "负责景点详情页的导购链路迭代",
+                    detailed_overview: "负责景点POI页的导购链路产品迭代，包括整体结构、二级简介页信息展示及货架，聚焦提升用户体验与转化率。",
+                    tags: ["C端决策优化", "B端服务能力", "流量分发策略"],
+                    projects: [
+                        {
+                            title: "方向一：C端决策信息展示优化",
+                            items: [
+                                "背景：POI页不仅承载购票功能，更是用户建立景区认知、辅助决策的关键环节。为降低评估选择成本、提升意向用户体验，主导决策信息展示优化。",
+                                "营业时间外露：重构运营配置系统逻辑，支持多场景营业时间智能展示，包括一年多段（如淡旺季）及一天多场次（如日夜场），分别覆盖POI 1865个、436个。针对筹建中景区，设计多层次状态逻辑（如“预计明天/某月某日开园”），提升信息透明度和用户预期管理，整体提升覆盖率12%。",
+                                "优待政策上货架：将优待人群免费票以商卡形式外露至货架，优化后台配置及强提醒校验，信息覆盖率提升60%，命中景区退款率下降26bp。",
+                                "景区电话入口感知强化：原景区电话入口在二级页，用户获得信息的难度较大，同友商相比存在体验gap。结合POI 页现有布局，将景区电话入口外露至POI页的交通模块；上线后协调bd团队及商家侧收集景区反馈，维护功能黑名单。"
+                            ]
+                        },
+                        {
+                            title: "方向二：B端服务能力建设",
+                            items: [
+                                "背景：线上展示的POI基础信息大多由景区或BD直接维护，而景区业务高度非标准化，受多重因素影响，信息层级复杂、维护入口分散，审核流程冗长，需提升系统响应能力。",
+                                "景区公告机审能力建设：接入美团AI审核工具，对词库进行人工适配调优，实现公告机审替代人工审核产品能力，公告发布时效由3-4小时缩短至分钟级，显著提升景区服务响应和运维效率。"
+                            ]
+                        },
+                        {
+                            title: "方向三：流量分发策略优化",
+                            items: [
+                                "背景：优选业务部分城市关停释放猜喜流量，曝光UV及YOY增长但访购率下滑，需专项提升转化效率。",
+                                "策略优化：基于人-货-场三维度，制定分发优化方案。一期聚焦场景维度（异地出行下商品降权、POI提权），提升即时消费意向用户转化；二期结合用户行（人）、商品属性（货）等细分策略，持续提升推荐准确度和CVR。"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    year: "2024.07 - 2024.12",
+                    company: "爱奇艺",
+                    role: "业务中台 - 数据产品经理",
+                    desc: "负责爱奇艺中台用户画像系统和AB测试平台的产品设计与迭代。",
+                    detailed_overview: "负责爱奇艺BI平台用户画像系统和AB测试平台的产品设计与迭代，目标为提升准确性、业务使用效率与满意度及平台智能化能力。",
+                    tags: ["数据中台", "用户画像", "AI探索"],
+                    projects: [
+                        {
+                            title: "标签内容质量监控",
+                            items: [
+                                "对内通过定期监控准确度和覆盖度等相关指标异动，识别标签质量优化优先级。",
+                                "对外优化飞书机器人答疑流程，创建业务需求反馈管理模版；迭代有效播放阈值字段及下游依赖的偏好类标签14个，准确度提升4.3%。"
+                            ]
+                        },
+                         {
+                            title: "产品功能迭代",
+                            items: [
+                                "画像平台圈选配置增加回退/前进按钮，提升复杂业务的配置效率。",
+                                "用户旅程-AB平台增加置信度分析与AB推全，提升实验流程自动化率。",
+                                "AB平台增加实验收藏功能，工作台添加收藏实验tab，提升用户查找效率。"
+                            ]
+                        },
+                        {
+                            title: "AI用户画像系统探索",
+                            items: [
+                                "现有用户画像系统是基于规则的标签体系，面临着准确度有限、标签迭代开发成本高等问题，联合算法团队及搜推团队进行基于LLM的AI用户画像系统建设探索。",
+                                "推进从用户分层选取、数据维度挖掘、LLM效果调研、成本计算与降本方案制定、标签生产及终端投产的全流程。",
+                                "搜推团队小流量实验，AI搜索召回实验区块展有效播放时长+2.5%，首页瀑布流推荐实验区块展示人均有效时长+0.4%。"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    year: "2023.09 - 2026.06",
+                    company: "华东师范大学",
+                    role: "信息资源管理",
+                    desc: "多段互联网产品实习 + 联合国实习。",
+                    tags: ["硕士", "联合国实习", "跨文化交流"],
+                    projects: [
+                        {
+                            title: "实习实践",
+                            items: [
+                                "多段互联网产品实习。"
+                            ]
+                        },
+                        {
+                            title: "对外交流",
+                            items: [
+                                "作为实习生由共青团中央外派至墨西哥联合国办公室半年，助力其专业化数字转型。"
+                            ]
+                        },
+                        {
+                            title: "科研成果",
+                            items: [
+                                "基于多智能体协同的健康产业报告评估。"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    year: "2019.09 - 2023.06",
+                    company: "北京语言大学",
+                    role: "信息管理与信息系统",
+                    desc: "英语专业八级；法语辅修；西语外派。",
+                    tags: ["本科", "人机交互", "数据挖掘"],
+                    projects: [
+                        {
+                            title: "荣誉奖项",
+                            items: [
+                                "校优秀团员、校级奖学金、优秀辩手、“互联网+”优秀奖。"
+                            ]
+                        },
+                        {
+                            title: "语言能力",
+                            items: [
+                                "TEM8 良好，CET4 659分，CET6 610分。"
+                            ]
+                        },
+                        {
+                            title: "实习经历 (决策咨询)",
+                            items: [
+                                "国家工业信息安全发展研究中心",
+                                "北京大数据研究院",
+                                "清华大学互联网产业研究院"
+                            ]
+                        },
+                        {
+                            title: "志愿服务",
+                            items: [
+                                "2022年北京冬奥会：奥地利代表团助理"
+                            ]
+                        }
+                    ]
+                }
+            ],
+            skills: [
+                "Figma", "Axure", "SQL", "Python", "Tableau", "AI Tools (LLM)", "数据分析", "AB Test", "用户画像", "策略产品"
+            ]
+        };
+
+        // --- Components ---
+
+        const Modal = ({ isOpen, onClose, data }) => {
+            const modalRef = useRef(null);
+            const contentRef = useRef(null);
+
+            useEffect(() => {
+                if (isOpen) {
+                    document.body.style.overflow = 'hidden'; // Prevent scroll
+                    
+                    // Animate In
+                    anime({
+                        targets: modalRef.current,
+                        opacity: [0, 1],
+                        duration: 300,
+                        easing: 'linear'
+                    });
+                    
+                    anime({
+                        targets: contentRef.current,
+                        translateY: [20, 0],
+                        opacity: [0, 1],
+                        scale: [0.98, 1],
+                        duration: 400,
+                        delay: 50,
+                        easing: 'easeOutQuad'
+                    });
+                } else {
+                    document.body.style.overflow = ''; // Restore scroll
+                }
+            }, [isOpen]);
+
+            if (!isOpen || !data) return null;
+
+            return (
+                <div 
+                    ref={modalRef}
+                    className="fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay"
+                    onClick={onClose}
+                >
+                    <div 
+                        ref={contentRef}
+                        className="bg-bg w-full max-w-3xl max-h-[85vh] overflow-y-auto rounded-none shadow-2xl p-8 md:p-12 relative border border-gray-800"
+                        onClick={e => e.stopPropagation()} 
+                    >
+                        <button 
+                            onClick={onClose}
+                            className="absolute top-6 right-6 text-gray-500 hover:text-accent transition-colors"
+                        >
+                            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+
+                        {/* Header */}
+                        <div className="mb-10">
+                            <div className="text-accent text-sm font-mono mb-3 tracking-wider">{data.year}</div>
+                            <h2 className="text-3xl md:text-4xl font-bold mb-3 text-white tracking-tight">{data.company}</h2>
+                            <h3 className="text-xl text-gray-400 font-light">{data.role}</h3>
+                        </div>
+
+                        {/* Overview Section */}
+                        {data.detailed_overview && (
+                            <div className="mb-12 bg-[#16181D] p-6 border-l-2 border-accent">
+                                <h4 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Overview</h4>
+                                <p className="text-gray-300 leading-relaxed text-base">
+                                    {data.detailed_overview}
+                                </p>
+                            </div>
+                        )}
+
+                        {/* Projects Section */}
+                        <div className="space-y-10">
+                            {data.projects && data.projects.length > 0 ? (
+                                data.projects.map((proj, i) => (
+                                    <div key={i} className="space-y-4">
+                                        <h4 className="text-lg font-bold text-white flex items-center gap-3">
+                                            <span className="w-1.5 h-1.5 bg-accent rounded-full"></span>
+                                            {proj.title}
+                                        </h4>
+                                        <ul className="space-y-3 pl-5 border-l border-gray-800 ml-0.5">
+                                            {proj.items.map((item, j) => (
+                                                <li key={j} className="text-gray-400 text-sm leading-7">
+                                                    {item}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                ))
+                            ) : (
+                                <p className="text-gray-400">{data.desc}</p>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const Hero = () => {
+            const svgRef = useRef(null);
+            
+            useEffect(() => {
+                // Advanced Line Drawing Animation
+                const tl = anime.timeline({
+                    easing: 'easeInOutSine',
+                    loop: false
+                });
+
+                tl.add({
+                    targets: svgRef.current.querySelectorAll('.letter-path path'),
+                    strokeDashoffset: [anime.setDashoffset, 0],
+                    duration: 2000,
+                    delay: anime.stagger(200), // Stagger each stroke
+                    stroke: ['#555', '#EAEAEA'], // Fade in color
+                    strokeWidth: [1, 3], // Thicken line
+                    easing: 'easeInOutCubic'
+                })
+                .add({
+                    targets: svgRef.current.querySelectorAll('.letter-path'),
+                    filter: ['drop-shadow(0 0 0px rgba(255,255,255,0))', 'drop-shadow(0 0 15px rgba(255,255,255,0.6))'],
+                    duration: 1000,
+                }, '-=1000');
+
+                // Subtle floating parallax on mouse move
+                const handleMouseMove = (e) => {
+                    const x = (window.innerWidth / 2 - e.clientX) / 40;
+                    const y = (window.innerHeight / 2 - e.clientY) / 40;
+                    if(svgRef.current) {
+                        anime.set(svgRef.current, {
+                            translateX: x,
+                            translateY: y,
+                            rotateX: -y * 0.5, // 3D Tilt
+                            rotateY: x * 0.5
+                        });
+                    }
+                };
+                window.addEventListener('mousemove', handleMouseMove);
+                return () => window.removeEventListener('mousemove', handleMouseMove);
+            }, []);
+
+            return (
+                <div className="h-screen flex flex-col items-center justify-center relative overflow-hidden perspective-1000">
+                    {/* Giant SVG Text - Centered & Larger */}
+                    <div className="relative z-10 w-full max-w-4xl px-4 flex justify-center">
+                        <svg ref={svgRef} viewBox="0 0 600 200" className="w-full h-auto max-h-[300px] drop-shadow-2xl">
+                            <g className="letter-path" fill="none" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                {/* L - Stylized */}
+                                <path d="M60,40 L60,160 L130,160" />
+                                
+                                {/* E - Stylized */}
+                                <path d="M160,40 L230,40" />
+                                <path d="M160,40 L160,160 L230,160" />
+                                <path d="M160,100 L210,100" />
+                                
+                                {/* N - Stylized */}
+                                <path d="M260,160 L260,40 L330,160 L330,40" />
+                                
+                                {/* G - Stylized */}
+                                <path d="M430,40 L360,40 L360,160 L430,160 L430,100 L400,100" />
+                            </g>
+                        </svg>
+                    </div>
+
+                    <div className="mt-12 text-center opacity-0 animate-[fadeIn_1.5s_ease-out_2.5s_forwards] relative z-20">
+                        <h1 className="text-3xl md:text-5xl font-light tracking-[0.3em] mb-4 text-white">
+                            {resumeData.profile.name_cn}
+                        </h1>
+                        <div className="flex items-center justify-center gap-4 text-sm md:text-base tracking-[0.2em] text-accent uppercase font-mono">
+                            <span className="w-8 h-[1px] bg-accent"></span>
+                            {resumeData.profile.role}
+                            <span className="w-8 h-[1px] bg-accent"></span>
+                        </div>
+                        <p className="mt-8 text-sub text-sm max-w-lg mx-auto leading-relaxed px-6 font-light">
+                            {resumeData.profile.summary}
+                        </p>
+                    </div>
+
+                    <div className="absolute bottom-4 w-[1px] h-12 bg-gray-800 overflow-hidden">
+                        <div className="w-full h-full bg-accent animate-[scrollDown_2s_infinite]"></div>
+                    </div>
+
+                    <style>{`
+                        .perspective-1000 { perspective: 1000px; }
+                        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+                        @keyframes scrollDown { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+                    `}</style>
+                </div>
+            );
+        };
+
+        const TimelineItem = ({ item, index, isVisible, onClick }) => {
+            const itemRef = useRef(null);
+
+            useEffect(() => {
+                if (isVisible) {
+                    anime({
+                        targets: itemRef.current,
+                        opacity: [0, 1],
+                        translateX: index % 2 === 0 ? [-50, 0] : [50, 0],
+                        easing: 'easeOutExpo',
+                        duration: 800
+                    });
+                }
+            }, [isVisible]);
+
+            return (
+                <div 
+                    ref={itemRef} 
+                    className={`flex items-center justify-between w-full mb-16 opacity-0 cursor-pointer group ${index % 2 === 0 ? 'flex-row-reverse' : ''}`}
+                    onClick={() => onClick(item)}
+                >
+                    {/* Content */}
+                    <div className={`w-[40%] ${index % 2 === 0 ? 'text-left pl-8' : 'text-right pr-8'} group-hover:opacity-80 transition-opacity`}>
+                        <h3 className="text-2xl font-bold mb-1 group-hover:text-accent transition-colors duration-300">{item.company}</h3>
+                        <p className="text-gray-400 text-sm font-mono mb-2">{item.role}</p>
+                        <p className="text-sub text-[11px] leading-relaxed mb-3 line-clamp-2">{item.desc}</p>
+                        <div className={`flex flex-wrap gap-2 ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
+                            {item.tags.map((tag, i) => (
+                                <span key={i} className="text-[10px] border border-gray-800 px-2 py-0.5 text-gray-500 rounded-sm uppercase">
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Center Point */}
+                    <div className="w-[20%] flex justify-center relative">
+                        <div className={`w-3 h-3 bg-bg border-2 ${isVisible ? 'border-accent scale-125' : 'border-gray-700'} rounded-full transition-all duration-500 z-10 group-hover:scale-150 group-hover:bg-accent`}></div>
+                        <div className="absolute top-1/2 -translate-y-1/2 text-[10px] font-mono text-gray-600 w-32 text-center group-hover:text-white transition-colors">
+                            {item.year}
+                        </div>
+                    </div>
+
+                    {/* Empty Space for Balance */}
+                    <div className="w-[40%]"></div>
+                </div>
+            );
+        };
+
+        const Timeline = ({ onSelect }) => {
+            const [visibleItems, setVisibleItems] = useState({});
+            const containerRef = useRef(null);
+            const lineRef = useRef(null);
+
+            useEffect(() => {
+                const handleScroll = () => {
+                    if (!containerRef.current || !lineRef.current) return;
+                    
+                    const rect = containerRef.current.getBoundingClientRect();
+                    const windowHeight = window.innerHeight;
+                    
+                    const start = rect.top;
+                    const end = rect.bottom;
+                    const totalHeight = rect.height;
+                    
+                    const offset = windowHeight / 2;
+                    let progress = (windowHeight / 2 - start) / totalHeight;
+                    progress = Math.max(0, Math.min(1, progress));
+                    
+                    lineRef.current.style.height = `${progress * 100}%`;
+
+                    resumeData.experience.forEach((_, index) => {
+                        const el = document.getElementById(`timeline-item-${index}`);
+                        if (el) {
+                            const itemRect = el.getBoundingClientRect();
+                            if (itemRect.top < windowHeight * 0.7) {
+                                setVisibleItems(prev => ({...prev, [index]: true}));
+                            }
+                        }
+                    });
+                };
+
+                window.addEventListener('scroll', handleScroll);
+                handleScroll(); 
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            return (
+                <div className="py-4 relative max-w-5xl mx-auto px-4" ref={containerRef}>
+                    <div className="absolute left-1/2 top-0 bottom-0 w-[1px] bg-gray-900 -translate-x-1/2"></div>
+                    <div 
+                        ref={lineRef} 
+                        className="absolute left-1/2 top-0 w-[2px] bg-accent -translate-x-1/2 transition-all duration-100 ease-linear shadow-[0_0_10px_#FF4B4B]"
+                        style={{height: '0%'}}
+                    ></div>
+
+                    {resumeData.experience.map((item, index) => (
+                        <div id={`timeline-item-${index}`} key={index}>
+                            <TimelineItem 
+                                item={item} 
+                                index={index} 
+                                isVisible={visibleItems[index]} 
+                                onClick={onSelect}
+                            />
+                        </div>
+                    ))}
+                </div>
+            );
+        };
+
+        const Skills = () => {
+            const gridRef = useRef(null);
+
+            useEffect(() => {
+                const observer = new IntersectionObserver((entries) => {
+                    if (entries[0].isIntersecting) {
+                        anime({
+                            targets: gridRef.current.children,
+                            scale: [0, 1],
+                            opacity: [0, 1],
+                            delay: anime.stagger(100, {grid: [4, 3], from: 'center'}),
+                            easing: 'spring(1, 80, 10, 0)'
+                        });
+                        observer.disconnect();
+                    }
+                }, { threshold: 0.5 });
+                
+                if (gridRef.current) observer.observe(gridRef.current);
+            }, []);
+
+            return (
+                <div className="py-32 flex flex-col items-center">
+                    <h2 className="text-3xl font-light mb-16 tracking-widest text-gray-500">技能栈</h2>
+                    <div ref={gridRef} className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+                        {resumeData.skills.map((skill, i) => (
+                            <div key={i} className="flex flex-col items-center group cursor-default">
+                                <div className="w-14 h-14 border border-gray-800 rounded-full flex items-center justify-center mb-4 group-hover:border-accent group-hover:bg-accent/10 transition-colors duration-300 relative overflow-hidden">
+                                    <div className="absolute inset-0 bg-accent opacity-0 group-hover:opacity-10 transition-opacity"></div>
+                                    <div className="w-1.5 h-1.5 bg-gray-600 rounded-full group-hover:bg-accent transition-colors group-hover:scale-150"></div>
+                                </div>
+                                <span className="text-sm text-gray-400 group-hover:text-white transition-colors text-center">
+                                    {skill}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        const Footer = () => (
+            <footer className="py-12 text-center border-t border-gray-900 text-gray-600 text-xs font-mono">
+                <p>DESIGNED & CODED WITH ANIME.JS</p>
+                <p className="mt-2">© 2026 冷语欣</p>
+            </footer>
+        );
+
+        const App = () => {
+            const [selectedExp, setSelectedExp] = useState(null);
+
+            return (
+                <div className="min-h-screen bg-bg selection:bg-accent selection:text-white">
+                    <Hero />
+                    <Timeline onSelect={setSelectedExp} />
+                    <Skills />
+                    <Footer />
+                    
+                    <Modal 
+                        isOpen={!!selectedExp} 
+                        onClose={() => setSelectedExp(null)} 
+                        data={selectedExp} 
+                    />
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
